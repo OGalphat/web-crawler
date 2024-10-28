@@ -1,0 +1,28 @@
+from database import Database
+
+class LinkSaver:
+    def __init__(self, database):
+        self.database = database
+
+    def save_all_links(self, all_links_file="all_pages.txt", unique_links_file="unique_pages.txt", blacklist_links_file="blacklisted_pages.txt"):
+        # Write all links to all_pages.txt
+        with open(all_links_file, "w") as all_file:
+            for link in self.database.crawled_links:
+                all_file.write(link + "\n")
+        
+        # Write only unique links to unique_pages.txt
+        with open(unique_links_file, "w") as unique_file:
+            for link in self.database.unique_links:
+                unique_file.write(link + "\n")
+        
+        # Write only blacklisted links to blacklisted_pages.txt
+        with open(blacklist_links_file, "w") as blacklist_file:
+            for link in self.database.blacklist_links:
+                blacklist_file.write(link + "\n")
+
+# Example usage
+if __name__ == "__main__":
+    db = Database()  # Create the database instance
+
+    link_saver = LinkSaver(db)  # Pass it to LinkSaver
+    link_saver.save_all_links()  # Save links to files
